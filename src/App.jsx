@@ -5,6 +5,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import { Provider } from 'react-redux';
 import store from './state';
 import Home from './pages/Home';
+import Settings from './pages/Settings';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -40,6 +41,7 @@ function App() {
       <IonReactRouter>
         <IonRouterOutlet>
           <Route path="/home" component={Home} exact={true} />
+          <Route path="/settings" component={Settings} exact={true} />
           <Route exact path="/" render={() => <Redirect to="/home" />} />
         </IonRouterOutlet>
       </IonReactRouter>

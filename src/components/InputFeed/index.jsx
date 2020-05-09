@@ -7,11 +7,18 @@ import {
   Checkbox,
 } from 'antd';
 import store from '../../state'
-import { setFeedAction } from '../../state/feeds';
+import { addFeedAction } from '../../state/feeds';
+import { getArticles } from '../../utilities/feeds';
 
-function onFinish(values) {
+async function onFinish(values) {
   const { feedUrl } = values;
-  store.dispatch(setFeedAction(feedUrl));
+  const feed = await getArticles(feedUrl);
+  const { title, description } = feed;
+  store.dispatch(addFeedAction({
+    title,
+    description,
+    url: feedUrl,
+  }));
   console.log('Success:', values);
 };
 
