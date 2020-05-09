@@ -5,6 +5,27 @@ import {
   Space,
 } from 'antd';
 
+import SafelySetInnerHTML from 'safely-set-inner-html';
+const instance = new SafelySetInnerHTML({
+  ALLOWED_TAGS: [
+    'a',
+    'table',
+    'strong',
+    'tr',
+    'td',
+    'img',
+    'br',
+    'span',
+  ],
+  ALLOWED_ATTRIBUTES: [
+    'alt',
+    'src',
+    'href',
+    'class'
+  ]
+});
+ 
+
 function compareTime( a, b ) {
   const dA = new Date(a.isoDate);
   const dB = new Date(b.isoDate);
@@ -44,7 +65,9 @@ function Feed(props) {
           console.log(item);
           return (
             <Card size="small" title={`${item.feedTitle} | ${item.title}`} extra={<a href={item.link}>More</a>} style={{ width: '100%' }}>
-              <p>{item.content}</p>
+              <div>
+                {instance.transform(item.content)}
+              </div>
               <p><strong>{item.isoDate}</strong></p>
             </Card>
           )
