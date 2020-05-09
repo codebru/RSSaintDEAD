@@ -2,7 +2,32 @@
   "name": "RSSaintDEAD",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "start": "npm run start:browser",
+    "start:browser": "react-scripts start",
+    "start:device": "npm run build:apk && cd android && ./gradlew installDebug && cd ..",
+    "build": "npm run build:browser",
+    "build:browser": "react-scripts build",
+    "build:apk": "npm run build:browser && ionic capacitor copy --no-build android && cd android && ./gradlew assembleDebug",
+    "build:ide": "npm run build:browser && npx cap copy android --no-build && npx cap open android"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "dependencies": {
+    "@capacitor/android": "^2.1.0",
     "@capacitor/core": "2.1.0",
     "@ionic/react": "^5.0.7",
     "@ionic/react-router": "^5.0.7",
@@ -26,27 +51,6 @@
     "redux": "^4.0.5",
     "rss-parser": "^3.8.0",
     "typescript": "3.8.3"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@capacitor/cli": "2.1.0"

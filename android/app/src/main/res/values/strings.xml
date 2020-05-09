@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">RSSaintDEAD</string>
+    <string name="title_activity_main">RSSaintDEAD</string>
+    <string name="package_name">uk.co.boxjam.rssaintdead</string>
+    <string name="custom_url_scheme">uk.co.boxjam.rssaintdead</string>
+</resources>
