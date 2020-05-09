@@ -37,7 +37,10 @@ function feedReducer(state = [], action) {
       console.log(action.payload);
       return action.payload;
     case 'ADD_FEED':
-      const newFeedStateAdd = [...state, action.payload];
+      let newFeedStateAdd = [];
+      if(state) newFeedStateAdd = [...state];
+      newFeedStateAdd = [...newFeedStateAdd, action.payload];
+
       setObject(FEED_KEY, newFeedStateAdd);
       return newFeedStateAdd;
     case 'REMOVE_FEED':
