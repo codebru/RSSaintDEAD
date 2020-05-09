@@ -1,0 +1,7 @@
+{
+  "name": "RSSaintDEAD",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
