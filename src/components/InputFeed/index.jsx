@@ -8,11 +8,11 @@ import {
 } from 'antd';
 import store from '../../state'
 import { addFeedAction } from '../../state/feeds';
-import { getArticles } from '../../utilities/feeds';
+import { getFeed } from '../../utilities/feeds';
 
 async function onFinish(values) {
   const { feedUrl } = values;
-  const feed = await getArticles(feedUrl);
+  const feed = await getFeed(feedUrl);
   const { title, description } = feed;
   store.dispatch(addFeedAction({
     title,

@@ -7,13 +7,27 @@ const parser = new Parser();
 // To get around this, you can use a proxy.
 const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 
-async function getArticles(feedURL) {
+async function getFeed(feedURL) {
   let feed = await parser.parseURL(`${CORS_PROXY}${feedURL}`);
   console.log(feed.items[0]);
-  store.dispatch(setArticlesAction(feed.items));
   return feed;
 }
 
+async function getAllArticles() {
+  const { feeds } = store.getState();
+  let allArticles = [];
+
+  for (const feed of feeds) {
+    const { items } = await getFeed(feed.url);
+    allArticles = [
+      ...allArticles,
+      ...items,
+    ]
+  }
+  store.dispatch(setArticlesAction(allArticles));
+}
+
 export {
-  getArticles,
+  getFeed,
+  getAllArticles,
 };
