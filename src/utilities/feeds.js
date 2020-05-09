@@ -1,6 +1,7 @@
 import Parser from 'rss-parser';
 import { setArticlesAction } from '../state/articles';
 import { store } from '../state';
+import { message } from 'antd';
 
 const parser = new Parser();
 // Note: some RSS feeds can't be loaded in the browser due to CORS security.
@@ -8,8 +9,16 @@ const parser = new Parser();
 const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 
 async function getFeed(feedURL) {
-  let feed = await parser.parseURL(`${CORS_PROXY}${feedURL}`);
-  console.log(feed.items[0]);
+  let feed = null;
+  try {
+  feed = await parser.parseURL(`${CORS_PROXY}${feedURL}`);
+  } catch (err) {
+    if (`${err}` === 'Error: Status code 404') {
+      message.error('Not a valid rss feed!')
+    } else {
+      message.error(`${err}`);
+    }
+  }
   return feed;
 }
 
