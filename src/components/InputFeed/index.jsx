@@ -4,23 +4,38 @@ import {
   Form,
   Input,
   Button,
-  Checkbox,
+  Row,
+  Col,
 } from 'antd';
 import { store } from '../../state'
 import { addFeedAction } from '../../state/feeds';
 import { getFeed } from '../../utilities/feeds';
 
+const SUGGESTED_FEEDS = [
+  {
+    title: 'BBC Africa',
+    url: 'http://feeds.bbci.co.uk/news/world/africa/rss.xml',
+  },
+  {
+    title: 'Guardian World',
+    url: 'https://www.theguardian.com/world/rss',
+  },
+];
 
 function InputFeed() {
   const [loading, setLoading] = useState(false);
 
-  async function onFinish(values) {
+  function onFinish(values) {
     const { feedUrl } = values;
+    addFeed(feedUrl);
+  }
+
+  async function addFeed(url) {
     let feed = null;
     let title = null;
     let description = null;
     setLoading(true);
-    feed = await getFeed(feedUrl);
+    feed = await getFeed(url);
     if (!feed) {
     setLoading(false);
       return;
@@ -30,10 +45,10 @@ function InputFeed() {
     store.dispatch(addFeedAction({
       title,
       description,
-      url: feedUrl,
+      url: url,
     }));
     setLoading(false);
-  };
+  }
 
   function onFinishFailed(errorInfo) {
     console.log('Failed:', errorInfo);
@@ -64,8 +79,20 @@ function InputFeed() {
           </Button>
         </Form.Item>
       </Form>
+      <Card title="Suggested Feeds">
+        {SUGGESTED_FEEDS.map((suggestedFeed) => {
+          return (
+            <Row style={{ marginBottom: '0.5rem' }}>
+              <Col span={20}>{suggestedFeed.title}</Col>
+              <Col span={4}>
+                <Button type="primary" onClick={() => addFeed(suggestedFeed.url)} loading={loading}>Add</Button>
+              </Col>
+            </Row>
+          )
+        })}
+      </Card>
     </Card>
-    );
+  );
 }
 
 export default InputFeed;
