@@ -18,11 +18,17 @@ async function getAllArticles() {
   let allArticles = [];
 
   for (const feed of feeds) {
-    const { items } = await getFeed(feed.url);
+    let { items } = await getFeed(feed.url);
+    items = items.map((item) => {
+      const newItem = item;
+      newItem.feedTitle = feed.title;
+      newItem.feedURL = feed.url;
+      return newItem;
+    })
     allArticles = [
       ...allArticles,
       ...items,
-    ]
+    ];
   }
   store.dispatch(setArticlesAction(allArticles));
 }
