@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Provider } from 'react-redux';
-import store from './state';
+import { store, loadStateFromDisk } from './state';
 import Home from './pages/Home';
 import Settings from './pages/Settings';
 
@@ -36,6 +36,9 @@ function AppWithStore() {
 }
 
 function App() {
+  useEffect(() => {
+    loadStateFromDisk();
+  },[])
   return (
     <IonApp>
       <IonReactRouter>

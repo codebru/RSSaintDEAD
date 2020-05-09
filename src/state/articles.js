@@ -1,5 +1,4 @@
 function setArticlesAction(articles) {
-
   return {
     type: 'SET_ARTICLES',
     payload: articles,

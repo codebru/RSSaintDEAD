@@ -32,7 +32,7 @@ function Feed(props) {
   useEffect(() =>{
     console.log('____ARTICLE_EFFECT_____');
     console.log(articles);
-    if(articles) {
+    if(articles && articles.length > 0) {
       setSortedArticles(sortArticles(articles));
     }
   },[articles])

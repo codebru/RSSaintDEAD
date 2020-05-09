@@ -8,7 +8,7 @@ import {
   IonButton,
   useIonViewWillEnter,
 } from '@ionic/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { SettingOutlined, ReloadOutlined } from '@ant-design/icons';
 import Feed from '../../components/Feed';
@@ -21,6 +21,9 @@ const Home = () => {
   const articles = useSelector((state) => state.articles);
 
   useIonViewWillEnter(getAllArticles);
+  useEffect(() => {
+    getAllArticles();
+  },[feeds]);
 
   return (
     <IonPage>

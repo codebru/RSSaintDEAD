@@ -1,7 +1,8 @@
 import { combineReducers, createStore } from 'redux';
 
-import { feedReducer } from './feeds';
-import { articlesReducer } from './articles';
+import { feedReducer, loadFeedsAction, FEED_KEY } from './feeds';
+import { articlesReducer, setArticlesAction } from './articles';
+import { getObject } from '../utilities/storage';
 
 const allReducers = combineReducers({
   feeds: feedReducer,
@@ -13,8 +14,17 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
 
-store.subscribe(() => {
-  console.log(store.getState())
-})
+async function loadStateFromDisk() {
+  store.dispatch(loadFeedsAction(await getObject(FEED_KEY)));
+}
 
-export default store;
+store.subscribe(() => {
+  console.log('_______ STORE UPDATE ________');
+  console.log(store.getState())
+}
+  )
+
+export {
+  loadStateFromDisk,
+  store,
+};

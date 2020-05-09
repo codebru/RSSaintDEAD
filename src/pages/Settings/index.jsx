@@ -5,7 +5,7 @@ import { Table, Tag, Space } from 'antd';
 import InputFeed from '../../components/InputFeed';
 import { DeleteOutlined } from '@ant-design/icons';
 import { removeFeedAction } from '../../state/feeds';
-import store from '../../state';
+import { store } from '../../state';
 
 const Settings = () => {
   const feeds = useSelector((state) => state.feeds);

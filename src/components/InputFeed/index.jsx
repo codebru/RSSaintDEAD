@@ -6,7 +6,7 @@ import {
   Button,
   Checkbox,
 } from 'antd';
-import store from '../../state'
+import { store } from '../../state'
 import { addFeedAction } from '../../state/feeds';
 import { getFeed } from '../../utilities/feeds';
 

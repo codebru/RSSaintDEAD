@@ -1,6 +1,6 @@
 import Parser from 'rss-parser';
 import { setArticlesAction } from '../state/articles';
-import store from '../state';
+import { store } from '../state';
 
 const parser = new Parser();
 // Note: some RSS feeds can't be loaded in the browser due to CORS security.
@@ -16,6 +16,8 @@ async function getFeed(feedURL) {
 async function getAllArticles() {
   const { feeds } = store.getState();
   let allArticles = [];
+  console.log('__feeds__');
+  console.log(feeds);
 
   for (const feed of feeds) {
     let { items } = await getFeed(feed.url);
