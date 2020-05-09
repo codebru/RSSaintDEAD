@@ -6,11 +6,11 @@ import {
 } from 'antd';
 
 function Feed(props) {
-  const { feed } = props;
+  const { articles } = props;
   return (
     <Space direction="vertical" style={{ width: '100%', paddingLeft: '0.5rem', paddingRight: '0.5rem' }}>
-      {feed
-        ? feed.items.map((item) => {
+      {articles
+        ? articles.map((item) => {
           return (
             <Card size="small" title={item.title} extra={<a href={item.link}>More</a>} style={{ width: '100%' }}>
               <p>{item.content}</p>
