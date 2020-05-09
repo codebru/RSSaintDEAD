@@ -3,11 +3,13 @@ import {
   Card,
   Spin,
   Space,
+  Divider,
 } from 'antd';
-
 import SafelySetInnerHTML from 'safely-set-inner-html';
+
 const instance = new SafelySetInnerHTML({
   ALLOWED_TAGS: [
+    'div',
     'h1',
     'p',
     'h2',
@@ -51,6 +53,19 @@ function sortArticles(articles){
   return newArticles;
 }
 
+function formatDate(isoDate) {
+  console.log('______TIME______');
+  console.log(isoDate);
+  const dt = new Date(isoDate);
+  const year = dt.getFullYear();
+  const month = dt.getMonth();
+  const day = dt.getDate();
+  const hour = dt.getHours();
+  const min = dt.getMinutes();
+  const timeString = `${year}/${month}/${day} - ${hour}:${min}`;
+  return (<p>{timeString}</p>)
+}
+
 function Feed(props) {
   const { articles } = props;
   const [sortedArticles, setSortedArticles] = useState(null);
@@ -69,11 +84,24 @@ function Feed(props) {
         ? sortedArticles.map((item) => {
           console.log(item);
           return (
-            <Card size="small" title={`${item.feedTitle} | ${item.title}`} extra={<a href={item.link}>More</a>} style={{ width: '100%' }}>
+            <Card
+            size="small"
+            title={item.feedTitle}
+            extra={<a href={item.link}>More</a>} 
+            style={{ width: '100%' }}
+            headStyle={{backgroundColor: 'rgb(236, 236, 236)'}}
+            >
+              <h1 style={{fontSize: '1.5rem'}}>{item.title}</h1>
+              <Divider style={{margin: '1rem'}} />
               <div>
                 {instance.transform(item.content)}
               </div>
-              <p><strong>{item.isoDate}</strong></p>
+              <Divider />
+              <p>
+                <strong>
+                  {formatDate(item.isoDate)}
+                </strong>
+              </p>
             </Card>
           )
         })
