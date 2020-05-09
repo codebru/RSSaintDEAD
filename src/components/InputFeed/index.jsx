@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   Form,
@@ -10,23 +10,35 @@ import { store } from '../../state'
 import { addFeedAction } from '../../state/feeds';
 import { getFeed } from '../../utilities/feeds';
 
-async function onFinish(values) {
-  const { feedUrl } = values;
-  const feed = await getFeed(feedUrl);
-  const { title, description } = feed;
-  store.dispatch(addFeedAction({
-    title,
-    description,
-    url: feedUrl,
-  }));
-  console.log('Success:', values);
-};
-
-function onFinishFailed(errorInfo) {
-  console.log('Failed:', errorInfo);
-};
 
 function InputFeed() {
+  const [loading, setLoading] = useState(false);
+
+  async function onFinish(values) {
+    const { feedUrl } = values;
+    let feed = null;
+    let title = null;
+    let description = null;
+    setLoading(true);
+    feed = await getFeed(feedUrl);
+    if (!feed) {
+    setLoading(false);
+      return;
+    }
+    title = feed.title;
+    description = feed.description;
+    store.dispatch(addFeedAction({
+      title,
+      description,
+      url: feedUrl,
+    }));
+    setLoading(false);
+  };
+
+  function onFinishFailed(errorInfo) {
+    console.log('Failed:', errorInfo);
+  };
+
   return (
     <Card>
       <Form
@@ -47,9 +59,9 @@ function InputFeed() {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button loading={loading} type="primary" htmlType="submit">
             Submit
-        </Button>
+          </Button>
         </Form.Item>
       </Form>
     </Card>
