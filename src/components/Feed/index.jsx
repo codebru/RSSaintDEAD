@@ -8,6 +8,11 @@ import {
 import SafelySetInnerHTML from 'safely-set-inner-html';
 const instance = new SafelySetInnerHTML({
   ALLOWED_TAGS: [
+    'h1',
+    'p',
+    'h2',
+    'h3',
+    'h4',
     'a',
     'table',
     'strong',
