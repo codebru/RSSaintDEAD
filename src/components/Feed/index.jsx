@@ -3,7 +3,11 @@ import {
   useIonViewWillEnter,
   useIonViewWillLeave,
 } from '@ionic/react';
-import { Card, Spin } from 'antd';
+import {
+  Card,
+  Spin,
+  Space,
+} from 'antd';
 import Parser from 'rss-parser';
 const parser = new Parser();
 
@@ -27,17 +31,21 @@ function Feed() {
     data();
   })
   return (
-    <div>
-      {feed 
+    <Space direction="vertical" style={{ width: '100%', paddingLeft: '0.5rem', paddingRight: '0.5rem' }}>
+      {feed
         ? feed.items.map((item) => {
           return (
-            <Card size="small" title={item.title} extra={<a href={item.link}>More</a>} style={{ width: 300 }}>
+            <Card size="small" title={item.title} extra={<a href={item.link}>More</a>} style={{ width: '100%' }}>
               <p>{item.content}</p>
             </Card>
           )
-      })
-      : <Spin />}
-    </div>
+        })
+        : (
+          <Spin tip="Loading...">
+            <Card loading={true} />
+          </Spin>
+        )}
+    </Space>
   );
 }
 
