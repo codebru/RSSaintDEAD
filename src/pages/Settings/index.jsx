@@ -73,7 +73,7 @@ const Settings = () => {
             <IonTitle size="large">Settings</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <Table columns={columns} dataSource={feeds} style={{width: '100%'}} />
+        <Table pagination={false} columns={columns} dataSource={feeds} style={{width: '100%'}} />
         <InputFeed />
       </IonContent>
     </IonPage>
