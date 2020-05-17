@@ -19,11 +19,6 @@ const Settings = () => {
       render: text => <a>{text}</a>,
     },
     {
-      title: 'URL',
-      dataIndex: 'url',
-      key: 'url',
-    },
-    {
       title: 'Delete',
       key: 'action',
       render: (text, record) => {
