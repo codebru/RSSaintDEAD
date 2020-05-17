@@ -1,0 +1,24 @@
+[
+  {
+    "name": "BBC",
+    "feeds": [
+      {
+        "name": "Africa",
+        "url": "http://feeds.bbci.co.uk/news/world/africa/rss.xml"
+      },
+      {
+        "name": "Asia",
+        "url": "http://feeds.bbci.co.uk/news/world/asia/rss.xml"
+      }
+    ]
+  },
+  {
+    "name": "Guardian",
+    "feeds": [
+      {
+        "name": "Zimbabwe",
+        "url": "http://www.theguardian.com/world/zimbabwe/rss"
+      }
+    ]
+  }
+]

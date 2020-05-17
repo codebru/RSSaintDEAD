@@ -10,6 +10,7 @@ import {
 import { store } from '../../state'
 import { addFeedAction } from '../../state/feeds';
 import { getFeed } from '../../utilities/feeds';
+import Directory from '../Directory';
 
 const SUGGESTED_FEEDS = [
   {
@@ -91,6 +92,7 @@ function InputFeed() {
           )
         })}
       </Card>
+      <Directory addFeed={addFeed} loading={loading} />
     </Card>
   );
 }

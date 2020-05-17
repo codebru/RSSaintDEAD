@@ -6,6 +6,7 @@ import InputFeed from '../../components/InputFeed';
 import { DeleteOutlined } from '@ant-design/icons';
 import { removeFeedAction } from '../../state/feeds';
 import { store } from '../../state';
+import Directory from '../../components/Directory';
 
 const Settings = () => {
   const feeds = useSelector((state) => state.feeds);
