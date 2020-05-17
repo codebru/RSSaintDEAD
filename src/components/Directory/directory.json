@@ -85,6 +85,36 @@
     ]
   },
   {
+    "name": "Global Voices",
+    "feeds": [
+      {
+        "name": "All site",
+        "url": "https://globalvoices.org/feed/"
+      },
+      {
+        "name": "Long articles",
+        "url": "https://globalvoices.org/feed/?cat=-28"
+      },
+      {
+        "name": "Short articles",
+        "url": "https://globalvoices.org/-/roundups/feed/"
+      },
+      {
+        "name": "Featured",
+        "url": "https://globalvoices.org/-/type/feature/feed/"
+      },
+      {
+        "name": "Videos",
+        "url": "https://globalvoices.org/-/type/video/feed/"
+      },
+      {
+        "name": "Photos",
+        "url": "https://globalvoices.org/-/type/photos/"
+      }
+    ],
+    "notes": "Many more country and topic based feeds on their website and can be manually added."
+  },
+  {
     "name": "Guardian",
     "feeds": [
       {

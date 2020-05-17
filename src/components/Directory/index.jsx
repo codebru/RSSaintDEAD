@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Collapse, Card, Row, Col, Button } from 'antd';
+import { Collapse, Card, Row, Col, Button, Divider } from 'antd';
 import directory from './directory.json';
 
 const { Panel } = Collapse;
@@ -22,6 +22,8 @@ function Directory(props) {
             </Row>
                 )
               })}
+              <Divider />
+              <p>{house.notes}</p>
             </Panel>
           )
         })}
