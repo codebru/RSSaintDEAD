@@ -118,9 +118,58 @@
     "name": "Guardian",
     "feeds": [
       {
-        "name": "Zimbabwe",
-        "url": "http://www.theguardian.com/world/zimbabwe/rss"
+        "name": "News",
+        "url": "https://www.theguardian.com/rss"
+      },
+      {
+        "name": "UK",
+        "url": "https://www.theguardian.com/uk-news/rss"
+      },
+      {
+        "name": "World",
+        "url": "https://www.theguardian.com/world/rss"
+      },
+      {
+        "name": "Business",
+        "url": "https://www.theguardian.com/uk/business/rss"
+      },
+      {
+        "name": "Football",
+        "url": "https://www.theguardian.com/football/rss"
+      },
+      {
+        "name": "Environment",
+        "url": "https://www.theguardian.com/uk/environment/rss"
+      },
+      {
+        "name": "UK Politics",
+        "url": "https://www.theguardian.com/politics/rss"
+      },
+      {
+        "name": "Education",
+        "url": "https://www.theguardian.com/education/rss"
+      },
+      {
+        "name": "Society",
+        "url": "https://www.theguardian.com/society/rss"
+      },
+      {
+        "name": "Science",
+        "url": "https://www.theguardian.com/science/rss"
+      },
+      {
+        "name": "Tech",
+        "url": "https://www.theguardian.com/tech/rss"
+      },
+      {
+        "name": "Global Development",
+        "url": "https://www.theguardian.com/global-development/rss"
+      },
+      {
+        "name": "Obituaries",
+        "url": "https://www.theguardian.com/tone/obituaries/rss"
       }
-    ]
+    ],
+    "notes": "There are many more feeds on the site, just add /rss to any non article page"
   }
 ]
