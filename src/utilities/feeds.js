@@ -28,6 +28,8 @@ async function getAllArticles() {
   console.log('__feeds__');
   console.log(feeds);
 
+  if (!feeds || !Array.isArray(feeds)) return;
+
   for (const feed of feeds) {
     let { items } = await getFeed(feed.url);
     items = items.map((item) => {
