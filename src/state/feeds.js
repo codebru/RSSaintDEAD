@@ -1,4 +1,3 @@
-import { getArticles } from '../utilities/feeds'
 import { setObject } from '../utilities/storage';
 
 const FEED_KEY = 'FEED_KEY';
@@ -38,7 +37,7 @@ function feedReducer(state = [], action) {
       return action.payload;
     case 'ADD_FEED':
       let newFeedStateAdd = [];
-      if(state) newFeedStateAdd = [...state];
+      if (state) newFeedStateAdd = [...state];
       newFeedStateAdd = [...newFeedStateAdd, action.payload];
 
       setObject(FEED_KEY, newFeedStateAdd);

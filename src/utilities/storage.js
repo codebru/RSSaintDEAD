@@ -1,42 +1,41 @@
-import { Plugins } from '@capacitor/core';
+import { Preferences } from "@capacitor/preferences";
 
-const { Storage } = Plugins;
 
 async function setObject(key, object) {
-  await Storage.set({
+  await Preferences.set({
     key,
     value: JSON.stringify(object),
   });
 }
 
 async function getObject(key) {
-  const ret = await Storage.get({ key });
+  const ret = await Preferences.get({ key });
   return JSON.parse(ret.value);
 }
 
 async function setValue(key, value) {
-  await Storage.set({
+  await Preferences.set({
     key,
     value,
   });
 }
 
 async function getValue(key) {
-  const { value } = await Storage.get({ key });
+  const { value } = await Preferences.get({ key });
   return value;
 }
 
 async function removeItem(key) {
-  await Storage.remove({ key });
+  await Preferences.remove({ key });
 }
 
 async function listKeys() {
-  const { keys } = await Storage.keys();
+  const { keys } = await Preferences.keys();
   return keys;
 }
 
 async function deleteAll() {
-  await Storage.clear();
+  await Preferences.clear();
 }
 
 export {

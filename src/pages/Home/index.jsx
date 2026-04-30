@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 import { SettingOutlined, ReloadOutlined } from '@ant-design/icons';
 import Feed from '../../components/Feed';
 import InputFeed from '../../components/InputFeed';
-import { getAllArticles, getArticles } from '../../utilities/feeds';
+import { getAllArticles } from '../../utilities/feeds';
 import './Style.css';
 
 const Home = () => {
@@ -23,7 +23,7 @@ const Home = () => {
   useIonViewWillEnter(getAllArticles);
   useEffect(() => {
     getAllArticles();
-  },[feeds]);
+  }, [feeds]);
 
   return (
     <IonPage>

@@ -1,25 +1,51 @@
-import Parser from 'rss-parser';
 import { setArticlesAction } from '../state/articles';
 import { store } from '../state';
 import { message } from 'antd';
+import { fetchText } from './crossOriginFetch';
 
-const parser = new Parser();
-// Note: some RSS feeds can't be loaded in the browser due to CORS security.
-// To get around this, you can use a proxy.
-const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
+// TODO review this as it was generated
+const text = (parent, tag) => parent.querySelector(tag)?.textContent ?? '';
+
+function parseFeed(xmlString) {
+  const doc = new DOMParser().parseFromString(xmlString, 'application/xml');
+  if (doc.querySelector('parsererror')) throw new Error('Invalid XML');
+
+  const isAtom = !!doc.querySelector('feed > entry');
+  const channel = isAtom ? doc.querySelector('feed') : doc.querySelector('channel');
+  if (!channel) throw new Error('Not an RSS or Atom feed');
+
+  const entryNodes = channel.querySelectorAll(isAtom ? 'entry' : 'item');
+  const items = Array.from(entryNodes).map((node) => ({
+    title: text(node, 'title'),
+    link: isAtom
+      ? node.querySelector('link')?.getAttribute('href') ?? ''
+      : text(node, 'link'),
+    content:
+      text(node, 'content\\:encoded') ||
+      text(node, 'content') ||
+      text(node, 'description') ||
+      text(node, 'summary'),
+    isoDate: new Date(
+      text(node, 'pubDate') || text(node, 'updated') || text(node, 'published')
+    ).toISOString(),
+  }));
+
+  return {
+    title: text(channel, 'title'),
+    description: text(channel, isAtom ? 'subtitle' : 'description'),
+    items,
+  };
+}
 
 async function getFeed(feedURL) {
-  let feed = null;
   try {
-  feed = await parser.parseURL(`${CORS_PROXY}${feedURL}`);
+    const xml = await fetchText(feedURL);
+    return parseFeed(xml);
   } catch (err) {
-    if (`${err}` === 'Error: Status code 404') {
-      message.error('Not a valid rss feed!')
-    } else {
-      message.error(`${err}`);
-    }
+    if (err.status === 404) message.error('Not a valid rss feed!');
+    else message.error(`${err.message ?? err}`);
+    return null;
   }
-  return feed;
 }
 
 async function getAllArticles() {
