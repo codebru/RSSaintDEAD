@@ -3,24 +3,29 @@ import { Capacitor, CapacitorHttp } from '@capacitor/core';
 // TODO switch this for my own self hosted version
 const CORS_PROXY = 'https://proxy.corsfix.com/?';
 
-async function fetchText(url) {
+class HttpStatusError extends Error {
+  status: number;
+  constructor(status: number) {
+    super(`Status code ${status}`);
+    this.status = status;
+    this.name = 'HttpStatusError';
+  }
+}
+
+async function fetchText(url: string): Promise<string> {
   if (Capacitor.isNativePlatform()) {
     const res = await CapacitorHttp.get({ url });
     if (res.status < 200 || res.status >= 300) {
-      const err = new Error(`Status code ${res.status}`);
-      err.status = res.status;
-      throw err;
+      throw new HttpStatusError(res.status);
     }
     return typeof res.data === 'string' ? res.data : String(res.data ?? '');
   }
 
   const res = await fetch(`${CORS_PROXY}${url}`);
   if (!res.ok) {
-    const err = new Error(`Status code ${res.status}`);
-    err.status = res.status;
-    throw err;
+    throw new HttpStatusError(res.status);
   }
   return res.text();
 }
 
-export { fetchText };
+export { fetchText, HttpStatusError };

@@ -1,12 +1,26 @@
+import { message } from 'antd';
 import { setArticlesAction } from '../state/articles';
 import { store } from '../state';
-import { message } from 'antd';
-import { fetchText } from './crossOriginFetch';
+import { fetchText, HttpStatusError } from './crossOriginFetch';
+
+export interface FeedItem {
+  title: string;
+  link: string;
+  content: string;
+  isoDate: string;
+}
+
+export interface ParsedFeed {
+  title: string;
+  description: string;
+  items: FeedItem[];
+}
 
 // TODO review this as it was generated
-const text = (parent, tag) => parent.querySelector(tag)?.textContent ?? '';
+const text = (parent: Element, tag: string): string =>
+  parent.querySelector(tag)?.textContent ?? '';
 
-function parseFeed(xmlString) {
+function parseFeed(xmlString: string): ParsedFeed {
   const doc = new DOMParser().parseFromString(xmlString, 'application/xml');
   if (doc.querySelector('parsererror')) throw new Error('Invalid XML');
 
@@ -15,7 +29,7 @@ function parseFeed(xmlString) {
   if (!channel) throw new Error('Not an RSS or Atom feed');
 
   const entryNodes = channel.querySelectorAll(isAtom ? 'entry' : 'item');
-  const items = Array.from(entryNodes).map((node) => ({
+  const items: FeedItem[] = Array.from(entryNodes).map((node) => ({
     title: text(node, 'title'),
     link: isAtom
       ? node.querySelector('link')?.getAttribute('href') ?? ''
@@ -37,42 +51,39 @@ function parseFeed(xmlString) {
   };
 }
 
-async function getFeed(feedURL) {
+async function getFeed(feedURL: string): Promise<ParsedFeed | null> {
   try {
     const xml = await fetchText(feedURL);
     return parseFeed(xml);
   } catch (err) {
-    if (err.status === 404) message.error('Not a valid rss feed!');
-    else message.error(`${err.message ?? err}`);
+    if (err instanceof HttpStatusError && err.status === 404) {
+      message.error('Not a valid rss feed!');
+    } else {
+      message.error(err instanceof Error ? err.message : String(err));
+    }
     return null;
   }
 }
 
-async function getAllArticles() {
+async function getAllArticles(): Promise<void> {
   const { feeds } = store.getState();
-  let allArticles = [];
+  let allArticles: Array<FeedItem & { feedTitle: string; feedURL: string }> = [];
   console.log('__feeds__');
   console.log(feeds);
 
   if (!feeds || !Array.isArray(feeds)) return;
 
   for (const feed of feeds) {
-    let { items } = await getFeed(feed.url);
-    items = items.map((item) => {
-      const newItem = item;
-      newItem.feedTitle = feed.title;
-      newItem.feedURL = feed.url;
-      return newItem;
-    })
-    allArticles = [
-      ...allArticles,
-      ...items,
-    ];
+    const parsed = await getFeed(feed.url);
+    if (!parsed) continue;
+    const items = parsed.items.map((item) => ({
+      ...item,
+      feedTitle: feed.title,
+      feedURL: feed.url,
+    }));
+    allArticles = [...allArticles, ...items];
   }
   store.dispatch(setArticlesAction(allArticles));
 }
 
-export {
-  getFeed,
-  getAllArticles,
-};
+export { getFeed, getAllArticles };

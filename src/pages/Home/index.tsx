@@ -8,19 +8,21 @@ import {
   IonButton,
   useIonViewWillEnter,
 } from '@ionic/react';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { SettingOutlined, ReloadOutlined } from '@ant-design/icons';
 import Feed from '../../components/Feed';
-import InputFeed from '../../components/InputFeed';
 import { getAllArticles } from '../../utilities/feeds';
+import type { RootState } from '../../state';
 import './Style.css';
 
 const Home = () => {
-  const feeds = useSelector((state) => state.feeds);
-  const articles = useSelector((state) => state.articles);
+  const feeds = useSelector((state: RootState) => state.feeds);
+  const articles = useSelector((state: RootState) => state.articles);
 
-  useIonViewWillEnter(getAllArticles);
+  useIonViewWillEnter(() => {
+    getAllArticles();
+  });
   useEffect(() => {
     getAllArticles();
   }, [feeds]);
@@ -31,10 +33,10 @@ const Home = () => {
         <IonToolbar>
           <IonTitle>RSSaintDead</IonTitle>
           <IonButtons slot="primary">
-            <IonButton color="secondary" routerLink="/settings" >
+            <IonButton color="secondary" routerLink="/settings">
               <SettingOutlined />
             </IonButton>
-            <IonButton color="primary" onClick={getAllArticles} >
+            <IonButton color="primary" onClick={() => getAllArticles()}>
               <ReloadOutlined />.
             </IonButton>
           </IonButtons>

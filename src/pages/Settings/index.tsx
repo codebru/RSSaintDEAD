@@ -1,34 +1,31 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import React from 'react';
 import { useSelector } from 'react-redux';
-import { Table, Tag, Space } from 'antd';
+import { Table, Space } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 import InputFeed from '../../components/InputFeed';
 import { DeleteOutlined } from '@ant-design/icons';
-import { removeFeedAction } from '../../state/feeds';
+import { removeFeedAction, type Feed } from '../../state/feeds';
 import { store } from '../../state';
-import Directory from '../../components/Directory';
+import type { RootState } from '../../state';
 
 const Settings = () => {
-  const feeds = useSelector((state) => state.feeds);
+  const feeds = useSelector((state: RootState) => state.feeds);
 
-  const columns = [
+  const columns: ColumnsType<Feed> = [
     {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
-      render: text => <a>{text}</a>,
+      render: (text: string) => <a>{text}</a>,
     },
     {
       title: 'Delete',
       key: 'action',
-      render: (text, record) => {
-        return (
+      render: (_text, record) => (
         <Space size="middle">
-            <DeleteOutlined onClick={() => store.dispatch(removeFeedAction(record.url))} />
-            {record.key}
-          </Space>
-        )
-      }
+          <DeleteOutlined onClick={() => store.dispatch(removeFeedAction(record.url))} />
+        </Space>
+      ),
     },
   ];
 
@@ -45,7 +42,13 @@ const Settings = () => {
             <IonTitle size="large">Settings</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <Table pagination={false} columns={columns} dataSource={feeds} style={{width: '100%'}} />
+        <Table
+          pagination={false}
+          columns={columns}
+          dataSource={feeds ?? []}
+          rowKey="url"
+          style={{ width: '100%' }}
+        />
         <InputFeed />
       </IonContent>
     </IonPage>

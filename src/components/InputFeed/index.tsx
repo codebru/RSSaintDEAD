@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Card,
   Form,
@@ -7,12 +7,17 @@ import {
   Row,
   Col,
 } from 'antd';
-import { store } from '../../state'
+import { store } from '../../state';
 import { addFeedAction } from '../../state/feeds';
 import { getFeed } from '../../utilities/feeds';
 import Directory from '../Directory';
 
-const SUGGESTED_FEEDS = [
+interface SuggestedFeed {
+  title: string;
+  url: string;
+}
+
+const SUGGESTED_FEEDS: SuggestedFeed[] = [
   {
     title: 'BBC Africa',
     url: 'http://feeds.bbci.co.uk/news/world/africa/rss.xml',
@@ -23,37 +28,36 @@ const SUGGESTED_FEEDS = [
   },
 ];
 
+interface FormValues {
+  feedUrl: string;
+}
+
 function InputFeed() {
   const [loading, setLoading] = useState(false);
 
-  function onFinish(values) {
+  function onFinish(values: FormValues) {
     const { feedUrl } = values;
     addFeed(feedUrl);
   }
 
-  async function addFeed(url) {
-    let feed = null;
-    let title = null;
-    let description = null;
+  async function addFeed(url: string) {
     setLoading(true);
-    feed = await getFeed(url);
+    const feed = await getFeed(url);
     if (!feed) {
-    setLoading(false);
+      setLoading(false);
       return;
     }
-    title = feed.title;
-    description = feed.description;
     store.dispatch(addFeedAction({
-      title,
-      description,
-      url: url,
+      title: feed.title,
+      description: feed.description,
+      url,
     }));
     setLoading(false);
   }
 
-  function onFinishFailed(errorInfo) {
+  function onFinishFailed(errorInfo: unknown) {
     console.log('Failed:', errorInfo);
-  };
+  }
 
   return (
     <Card>
@@ -83,13 +87,13 @@ function InputFeed() {
       <Card title="Suggested Feeds">
         {SUGGESTED_FEEDS.map((suggestedFeed) => {
           return (
-            <Row style={{ marginBottom: '0.5rem' }}>
+            <Row style={{ marginBottom: '0.5rem' }} key={suggestedFeed.url}>
               <Col span={20}>{suggestedFeed.title}</Col>
               <Col span={4}>
                 <Button type="primary" onClick={() => addFeed(suggestedFeed.url)} loading={loading}>Add</Button>
               </Col>
             </Row>
-          )
+          );
         })}
       </Card>
       <Directory addFeed={addFeed} loading={loading} />
